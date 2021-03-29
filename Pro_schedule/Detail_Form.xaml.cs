@@ -24,7 +24,8 @@ namespace Pro_schedule
         public Constants _const;
         public string spType = "";
         public string lacking = "";
-        public string lockedBy = "";
+        public string lockedBy = "", lockedByName = "";
+
         public bool Locked = false;
 
         List<cmbData> actions, status, room, department;
@@ -36,7 +37,7 @@ namespace Pro_schedule
             InitializeComponent();
             this._const = _const;
             lblEmpID.Content = $"{_const.empName} ({_const.empID.ToUpper()})";
-           
+
 
             GetDetailData();
             SetCmbDepartment();
@@ -46,17 +47,17 @@ namespace Pro_schedule
             SetCmbPriority();
             EnableControllers();
 
-           
 
-            timer = new System.Timers.Timer(1000 * 60 ); 
+
+            timer = new System.Timers.Timer(1000 * 60);
             timer.Elapsed += AutoSendArpProc;
             timer.AutoReset = true;
             timer.Enabled = true;
 
             _const.curTime = DateTime.Now.ToString("HH:mm");
-            lblLink.Content = "RECORD LOCKED BY: " + _const.empName + " @ " + _const.curTime;
+            lblLink.Content = "RECORD LOCKED BY: " + lockedByName + " @ " + _const.curTime;
 
-            if (_const.proLevel <90)       
+            if (_const.proLevel < 90)
             {
                 stackSession.Visibility = Visibility.Visible;
                 lblSessionTime.Content = _const.proLevel.ToString() + " Mins";
@@ -71,9 +72,9 @@ namespace Pro_schedule
         private void AutoSendArpProc(object sender, ElapsedEventArgs e)
         {
             _const.curTime = DateTime.Now.ToString("HH:mm");
-            this.Dispatcher.Invoke(()=> lblLink.Content = "RECORD LOCKED BY: " + _const.empName + " @ " + _const.curTime);
+            this.Dispatcher.Invoke(() => lblLink.Content = "RECORD LOCKED BY: " + _const.empName + " @ " + _const.curTime);
 
-            if (_const.proLevel < 90)  
+            if (_const.proLevel < 90)
                 this.Dispatcher.Invoke(() => lblSessionTime.Content = _const.proLevel.ToString() + " Mins");
         }
 
@@ -97,7 +98,7 @@ namespace Pro_schedule
                     cmbitem.text = reader["TEXT"].ToString();
                     department.Add(cmbitem);
                     texts.Add(cmbitem.text);
-                    if (cmbitem.value == depID) depIndex= texts.Count - 1;
+                    if (cmbitem.value == depID) depIndex = texts.Count - 1;
                 }
                 cmbDEPARTMENT.ItemsSource = texts;
                 cmbDEPARTMENT.SelectedIndex = depIndex;
@@ -125,7 +126,7 @@ namespace Pro_schedule
                     cmbitem.text = reader["TEXT"].ToString();
                     room.Add(cmbitem);
                     texts.Add(cmbitem.text);
-                    if (cmbitem.value == roomID) roomIndex= texts.Count - 1;
+                    if (cmbitem.value == roomID) roomIndex = texts.Count - 1;
                 }
                 cmbROOM.ItemsSource = texts;
                 cmbROOM.SelectedIndex = roomIndex;
@@ -226,6 +227,7 @@ namespace Pro_schedule
                     DUE_DATE.Content = DateTime.Parse(reader["DUE_DATE"].ToString()).ToString("MM/dd/yyyy");
                     QTY.Content = reader["QTY"].ToString();
                     PICK.Content = reader["PICK"].ToString();
+                    lockedByName = reader["RECORD_LOCK_BY"].ToString();
                     lockedBy = reader["RECORD_LOCKED_BY_ID"].ToString();
                     lacking = reader["LACKING"].ToString();
 
@@ -239,7 +241,7 @@ namespace Pro_schedule
                     if (!string.IsNullOrEmpty(priority))
                     {
                         cmbPRIORITY.SelectedIndex = int.Parse(priority) - 1;
-                    }   
+                    }
                     else
                     {
                         cmbPRIORITY.SelectedIndex = 2;
@@ -250,13 +252,15 @@ namespace Pro_schedule
                 if (!string.IsNullOrEmpty(lockedBy) && lockedBy.ToUpper() == _const.empID.ToUpper()) Locked = true;
                 else Locked = false;
 
-                if (lockedBy.ToUpper() != _const.empID.ToUpper() || _const.proLevel>=90)
+                if (lockedBy.ToUpper() != _const.empID.ToUpper() || _const.proLevel < 90)
                 {
-                    btnLink.Visibility = Visibility.Visible;
+                    btnLink.Visibility = Visibility.Hidden;
+
                 }
                 else
                 {
-                    btnLink.Visibility = Visibility.Hidden;
+                    btnLink.Visibility = Visibility.Visible;
+
                 }
 
                 if (lacking != "YES")
@@ -264,7 +268,8 @@ namespace Pro_schedule
                     btnLacking.Content = "NO LACKING";
                     btnLacking.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x3C, 0xB3, 0x71));
 
-                } else
+                }
+                else
                 {
                     btnLacking.Content = "LACKING";
                     btnLacking.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0xB2, 0x22, 0x22));
@@ -276,12 +281,13 @@ namespace Pro_schedule
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
+
             depID = cmbDEPARTMENT.SelectedIndex > -1 ? department[cmbDEPARTMENT.SelectedIndex].value : null;
             roomID = cmbROOM.SelectedIndex > -1 ? room[cmbROOM.SelectedIndex].value : null;
             statusID = cmbSTATUS.SelectedIndex > -1 ? status[cmbSTATUS.SelectedIndex].value : null;
-            actionID = cmbSTATUS.SelectedIndex > -1 ? actions[cmbSTATUS.SelectedIndex].value : null;
+            actionID = cmbSTATUS.SelectedIndex > -1 ? actions[cmbACTION.SelectedIndex].value : null;
             prioID = cmbPRIORITY.SelectedIndex > -1 ? (cmbPRIORITY.SelectedIndex + 1).ToString() : null;
-            
+
             using (SqlConnection conn = new SqlConnection(_const.conStringList))
             {
                 conn.Open();
@@ -297,15 +303,15 @@ namespace Pro_schedule
                 else cmd.Parameters.AddWithValue("@PRIORITY", int.Parse(prioID));
 
                 if (string.IsNullOrEmpty(roomID)) cmd.Parameters.AddWithValue("@ROOM_RECORD_ID", null);
-                else cmd.Parameters.AddWithValue("@ROOM_RECORD_ID", int.Parse(roomID)) ;
+                else cmd.Parameters.AddWithValue("@ROOM_RECORD_ID", int.Parse(roomID));
 
                 if (string.IsNullOrEmpty(MANUAL_QTY.Text)) cmd.Parameters.AddWithValue("@BATCHSHEET_QTY", null);
                 else cmd.Parameters.AddWithValue("@BATCHSHEET_QTY", float.Parse(MANUAL_QTY.Text));
 
-                if ( string.IsNullOrEmpty(statusID)) cmd.Parameters.AddWithValue("@STATUS_ROW_ID", null);
+                if (string.IsNullOrEmpty(statusID)) cmd.Parameters.AddWithValue("@STATUS_ROW_ID", null);
                 else cmd.Parameters.AddWithValue("@STATUS_ROW_ID", int.Parse(statusID));
 
-                if ( string.IsNullOrEmpty(actionID)) cmd.Parameters.AddWithValue("@ACTION_ROW_ID", null);
+                if (string.IsNullOrEmpty(actionID)) cmd.Parameters.AddWithValue("@ACTION_ROW_ID", null);
                 else cmd.Parameters.AddWithValue("@ACTION_ROW_ID", int.Parse(actionID));
 
                 cmd.Parameters.AddWithValue("@NOTES", txtNote.Text);
@@ -317,12 +323,12 @@ namespace Pro_schedule
                 cmd.ExecuteNonQuery();
 
                 int proOk = (int)cmd.Parameters["@OK2GO"].Value;
-                if  (proOk == 0)
+                if (proOk == 0)
                 {
                     lblLogError.Foreground = Brushes.Green;
                     lblLogError.Content = cmd.Parameters["@SP_MESSAGE"].Value;
                 }
-                else if ( proOk>0)
+                else if (proOk > 0)
                 {
                     lblLogError.Foreground = Brushes.Red;
                     lblLogError.Content = cmd.Parameters["@SP_MESSAGE"].Value;
@@ -331,15 +337,18 @@ namespace Pro_schedule
         }
         private void btnLink_Click(object sender, RoutedEventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(_const.conStringList))
+            if (_const.proLevel >= 90)
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("[dbo].[DLI_WOT_PROD_SCHED_IUD]", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@SP_TYPE", "UR");
-                cmd.Parameters.AddWithValue("@WO_ID", _const.WO_ID);
-                cmd.Parameters.AddWithValue("@EMP_ID", _const.empID);
-                cmd.ExecuteNonQuery();
+                using (SqlConnection conn = new SqlConnection(_const.conStringList))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("[dbo].[DLI_WOT_PROD_SCHED_IUD]", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SP_TYPE", "UR");
+                    cmd.Parameters.AddWithValue("@WO_ID", _const.WO_ID);
+                    cmd.Parameters.AddWithValue("@EMP_ID", _const.empID);
+                    cmd.ExecuteNonQuery();
+                }
             }
 
         }
@@ -356,18 +365,17 @@ namespace Pro_schedule
 
         private void cmbDEPARTMENT_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+
             SetCmbRoom();
 
         }
 
         private void btnLacking_Click(object sender, RoutedEventArgs e)
         {
-            if (_const.proLevel > 90)
-            {
-                string url = @"http://dlihome.deseretlabs.com/vmfg/wo_tracking_rm_requirements.asp?strWO_ID=" + _const.WO_ID;
-                System.Diagnostics.Process.Start("cmd", "/c start " + url);
-            }
+
+            string url = @"https://dlihome.deseretlabs.com/vmfg/wo_tracking_rm_requirements.asp?strWO_ID=" + _const.WO_ID;
+            System.Diagnostics.Process.Start("cmd", "/c start " + url);
+
         }
         private void CloseWin()
         {
@@ -383,7 +391,7 @@ namespace Pro_schedule
             }
             Close();
         }
-     
+
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -402,7 +410,7 @@ namespace Pro_schedule
         }
         private void EnableControllers()
         {
-            Submit.IsEnabled = txtNote.IsEnabled = MANUAL_QTY.IsEnabled = cmbDEPARTMENT.IsEnabled = cmbROOM.IsEnabled 
+            Submit.IsEnabled = txtNote.IsEnabled = MANUAL_QTY.IsEnabled = cmbDEPARTMENT.IsEnabled = cmbROOM.IsEnabled
                 = cmbSTATUS.IsEnabled = cmbACTION.IsEnabled = cmbPRIORITY.IsEnabled = btnLacking.IsEnabled = Locked;
             //if ( Locked == false)
             //{
