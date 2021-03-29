@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>calicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Font\fontawesome.ttf" />
+    <None Remove="Resource\app.ico" />
+    <None Remove="Resource\app.png" />
+    <None Remove="Resource\app1.png" />
+    <None Remove="Resource\arrow.ico" />
+    <None Remove="Resource\arrow.png" />
+    <None Remove="Resource\BG.png" />
+    <None Remove="Resource\forward.ico" />
+    <None Remove="Resource\Forward.png" />
+    <None Remove="Resource\net-on.png" />
+    <None Remove="Resource\TaskView.ico" />
+    <None Remove="Resource\TitleBar.png" />
+    <None Remove="Resource\Warning.ico" />
+    <None Remove="Resource\Warning_Background.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Font\fontawesome.ttf" />
+    <Resource Include="Resource\arrow.ico" />
+    <Resource Include="Resource\arrow.png" />
+    <Resource Include="Resource\BG.png" />
+    <Resource Include="Resource\Forward.png" />
+    <Resource Include="Resource\net-on.png" />
+    <Resource Include="Resource\TaskView.ico" />
+    <Resource Include="Resource\TitleBar.png" />
+    <Resource Include="Resource\Warning.ico" />
+    <Resource Include="Resource\Warning_Background.ico" />
+  </ItemGroup>
+</Project>

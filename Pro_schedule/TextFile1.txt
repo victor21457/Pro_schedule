@@ -1,0 +1,111 @@
+﻿ <DataGrid x:Name="dt_ListView" Grid.Row="3" ItemsSource="{Binding lProlist}" IsReadOnly="True" CanUserResizeRows="False" GridLinesVisibility="None" SelectedItem="Flase" AutoGenerateColumns="False" CanUserResizeColumns="True" CanUserReorderColumns="False" Height="auto"  BorderBrush="Black" Background="#FFF0F0F0" Margin="10,0,10,10" FontSize="14" VirtualizingStackPanel.IsVirtualizing="False" BorderThickness="1" >
+                <DataGrid.Resources>
+                    <LinearGradientBrush x:Key="HeaderBorderBrush" StartPoint="0.5,0" EndPoint="0.5,1">
+                        <!--<GradientStop Color="White" />
+                            <GradientStop Color="White" Offset="0.1" />-->
+                        <GradientStop Color="#DD008B8B" Offset="0.52" />
+                    </LinearGradientBrush>
+                    <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="Background" Value="{StaticResource HeaderBorderBrush}" />
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Height" Value="28"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    </Style>
+                </DataGrid.Resources>
+                <!--<DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding State}" Value="Danger">
+                                <Setter Property="Background" Value="Tomato"></Setter>
+                            </DataTrigger>
+                            --><!--<DataTrigger Binding="{Binding State}" Value="State2">
+                                    <Setter Property="Background" Value="Green"></Setter>
+                                </DataTrigger>--><!--
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>-->
+                
+                <DataGrid.Columns >
+                    <DataGridTemplateColumn Header="Select" Width="0.5*" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Click="btnSelect_Click" Background="White" BorderThickness="0">
+                                    <Image Source="{Binding Image}"  />
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="1*" Header="WO ID " Binding="{Binding WO_ID}">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                    <TextBox x:Name="txtWO" Width="100" TextChanged="txtFilter_TextChanged" FontWeight="Normal" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="ToolTip" Value="{Binding WO_ID}" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="1*" Header="PART ID " Binding="{Binding PART_ID}">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                    <TextBox x:Name="txtPART" Width="100" TextChanged="txtFilter_TextChanged" FontWeight="Normal" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="ToolTip" Value="{Binding PART_ID}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="3*" Header="PART DESC " Binding="{Binding PART_DESC}" >
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                    <TextBox x:Name="txtDESC" Width="150" TextChanged="txtFilter_TextChanged" FontWeight="Normal" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Left" />
+                                <Setter Property="ToolTip" Value="{Binding PART_DESC}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Width="1*" Header="DUE DATE" Binding="{Binding DUE_DATE}" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="ToolTip" Value="{Binding DUE_DATE}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Width="1*" Header="STATUS" Binding="{Binding STATUS}" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="ToolTip" Value="{Binding STATUS}" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            

@@ -1,0 +1,172 @@
+﻿<Window x:Class="Pro_schedule.Detail_Form"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pro_schedule" 
+        xmlns:controls="clr-namespace:Pro_schedule.Resource"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        MinHeight="300" MinWidth = "300"
+        Width="1200" Height="770"
+        ResizeMode = "NoResize"
+        WindowStartupLocation="CenterScreen"
+        BorderBrush="Black"
+        WindowStyle="None" MouseMove="Window_MouseMove">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#eeeeee" Offset="0" />
+                <GradientStop Color="#c3c3c3" Offset="1" />
+                <GradientStop Color="#eeeeee" Offset="0.866" />
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="50*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+
+        <Grid Height="50" MouseMove="Grid_MouseMove" VerticalAlignment="Center" Background="#FF40A6D1">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="3" Direction="270" Opacity="0.2" />
+            </Grid.Effect>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="36"/>
+                <ColumnDefinition Width="24"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:HeaderDecoration Grid.ColumnSpan="2" Margin="0,0,1009,0"/>
+
+            <DockPanel Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Left" Height="50" LastChildFill="False">
+                <Image x:Name="AVARTA" Height="25" Width="25" Panel.ZIndex="1" HorizontalAlignment="Left" Margin="14,0,0,10" Source="./Resource/net-on.png" Stretch="Uniform" RenderTransformOrigin="0.396,1.005" VerticalAlignment="Bottom"/>
+                <Label Content=" DETAIL PAGE" VerticalContentAlignment="Center" VerticalAlignment="Center" Foreground="White"
+                       FontWeight="SemiBold" FontSize="21" IsManipulationEnabled="True" Padding="0,5,5,5" Margin="0,0,0,0" />
+            </DockPanel>
+            <StackPanel Grid.ColumnSpan="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left"
+                        Margin="17,0,0,0">
+                <Button Width="40" Height="40" Content="&#xF00D;" Style="{DynamicResource CloseMinMaxButtonStyle}"
+                        BorderBrush="Transparent" Background="Transparent" Foreground="White"
+                        FontFamily="pack://application:,,,/Font/#FontAwesome" FontSize="20"
+                        VerticalContentAlignment="Bottom" Click ="WinClose" Focusable="False" />
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="20,10,10,0" >
+            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="10,0,10,0" >
+                <Label Content="PRODUCTION SCHEDULE" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25" FontWeight="Bold"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Label Content="LOGGED IN EMPLOYEE:" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="23" />
+                    <Label x:Name="lblEmpID" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="23" Foreground="Red"/>
+                </StackPanel>
+                <Grid >
+                    <StackPanel x:Name="stackSession" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="SESSION WILL EXPIRE IN: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="16" FontWeight="Bold"/>
+                        <Label x:Name="lblSessionTime" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="16"/>
+                    </StackPanel>
+                    <Button x:Name="btnLacking" Content="" Padding="50 5"  FontWeight="SemiBold" Foreground="White" BorderBrush="{x:Null}" Style="{DynamicResource RoundedLackedButtonStyle}"
+                      FontSize="14" TabIndex="3" RenderTransformOrigin="1.779,0.903" Height="40" HorizontalAlignment="Right" Click="btnLacking_Click"  ToolTip="Visite Site URL"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="4">
+                    <Label x:Name="lblLink" Content=""  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                    <Button x:Name="btnLink" Background="#EEEEEE" BorderThickness="0" Click="btnLink_Click" ToolTip="Execute UR Stored Procedure">
+                        <Label x:Name="lblAdminLink" Content="admin link to unlock" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Foreground="Blue"/>
+                    </Button>
+                </StackPanel>
+
+                <Label Content="WO LOT: " Grid.Column="0"  Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Label x:Name="WO_ID" Content="" Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" />
+                <Label Content="PART ID: " Grid.Column="2"  Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Label x:Name="PART_ID" Content="" Grid.Column="3"  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" />
+
+                <Label x:Name="lblPartDesc" Content="" Grid.ColumnSpan="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+
+                <Label Content="STATUS: " Grid.Column="0"  Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Label x:Name="STATUS" Content="" Grid.Column="1"  Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" />
+                <Label Content="DUE DATE: " Grid.Column="2"  Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Label x:Name="DUE_DATE" Content="" Grid.Column="3"  Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" />
+
+                <Label Content="QTY: " Grid.Column="0"  Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Label x:Name="QTY" Content="" Grid.Column="1"  Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" />
+                <Label Content="PICK: " Grid.Column="2"  Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Label x:Name="PICK" Content="" Grid.Column="3"  Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" />
+
+                <Separator Grid.Row="5" Grid.ColumnSpan="4" VerticalAlignment="Top" />
+
+                <Label Content="DEPARTMENT: " Grid.Column="0" Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                <ComboBox x:Name="cmbDEPARTMENT" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Width="250" SelectionChanged="cmbDEPARTMENT_SelectionChanged" />
+
+                <Label Content="ROOM: " Grid.Column="2"  Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                <ComboBox x:Name="cmbROOM" Grid.Column="3" Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Width="250"/>
+
+                <Label Content="MANUAL QTY: " Grid.Column="0"  Grid.Row="7" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                <TextBox x:Name="MANUAL_QTY" Text="" Grid.Column="1"  Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Width="250" />
+
+                <Label Content="STATUS: " Grid.Column="2"  Grid.Row="7" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                <ComboBox x:Name="cmbSTATUS" Grid.Column="3" Grid.Row="7" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Width="250" />
+
+                <Label Content="ACTION: " Grid.Column="0"  Grid.Row="8" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                <ComboBox x:Name="cmbACTION"  Grid.Column="1" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Width="250"  SelectionChanged="cmbACTION_SelectionChanged"/>
+
+                <Label Content="PRIORITY: " Grid.Column="2"  Grid.Row="8" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                <ComboBox x:Name="cmbPRIORITY" Grid.Column="3" Grid.Row="8" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" Width="250"/>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="3" Margin="20,0,50,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="NOTES: " HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="18" />
+                <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
+                    <TextBox x:Name="txtNote" Text="" FontSize="18" Background="#fff" TextWrapping="Wrap" Padding="5" />
+                </Border>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="4" >
+            <Label x:Name="lblLogError" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+        </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Top" Height="40">
+            <Button x:Name="Submit" Content="SAVE" Style="{DynamicResource RoundedGreenButtonStyle}" 
+                      Padding="50 5" Margin="0,0,10,0" FontWeight="SemiBold" Foreground="White" BorderBrush="{x:Null}"
+                      FontSize="14" TabIndex="3" RenderTransformOrigin="1.779,0.903" Height="40" Click="Submit_Click" ToolTip="Save Data"/>
+            <Button x:Name="Close" Content="CLOSE" Style="{DynamicResource RoundedRedButtonStyle}" 
+                      Padding="50 5" FontWeight="SemiBold" Foreground="White" BorderBrush="{x:Null}"
+                      FontSize="14" TabIndex="3" RenderTransformOrigin="1.779,0.903" Height="40" Click="Close_Click" ToolTip="Cancel Update"/>
+        </StackPanel>
+    </Grid>
+</Window>
