@@ -603,7 +603,7 @@
                             <Setter Property="BorderBrush" TargetName="border" Value="#B22222"/>
                             <Setter Property="Background" Value="#FFB22222" TargetName="border"/>
                         </Trigger>
-                        <Trigger Property="Content" Value="NO LACKING">
+                        <Trigger Property="Content" Value="NOT LACKING">
                             <Setter Property="BorderBrush" TargetName="border" Value="#3CB371"/>
                             <Setter Property="Background" Value="#FF3CB371" TargetName="border"/>
                         </Trigger>

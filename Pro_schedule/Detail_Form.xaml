@@ -50,8 +50,8 @@
 
             <DockPanel Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Left" Height="50" LastChildFill="False">
                 <Image x:Name="AVARTA" Height="25" Width="25" Panel.ZIndex="1" HorizontalAlignment="Left" Margin="14,0,0,10" Source="./Resource/net-on.png" Stretch="Uniform" RenderTransformOrigin="0.396,1.005" VerticalAlignment="Bottom"/>
-                <Label Content=" DETAIL PAGE" VerticalContentAlignment="Center" VerticalAlignment="Center" Foreground="White"
-                       FontWeight="SemiBold" FontSize="21" IsManipulationEnabled="True" Padding="0,5,5,5" Margin="0,0,0,0" />
+                <Label Content="Work Order Detail" VerticalContentAlignment="Center" VerticalAlignment="Center" Foreground="White"
+                       FontWeight="SemiBold" FontSize="21" IsManipulationEnabled="True" Padding="0,5,5,5" Margin="5,0,0,0" />
             </DockPanel>
             <StackPanel Grid.ColumnSpan="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left"
                         Margin="17,0,0,0">
@@ -63,20 +63,21 @@
         </Grid>
 
         <Grid Grid.Row="1" Margin="20,10,10,0" >
-            <StackPanel Grid.Row="1" Orientation="Vertical" Margin="10,0,10,0" >
+            <StackPanel Orientation="Vertical" Margin="10,0,10,11" >
                 <Label Content="PRODUCTION SCHEDULE" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="25" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Label Content="LOGGED IN EMPLOYEE:" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="23" />
-                    <Label x:Name="lblEmpID" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="23" Foreground="Red"/>
+                    <Label Content="LOGGED IN EMPLOYEE:" FontSize="14" />
+                    <Label x:Name="lblEmpID" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="14" Foreground="Red"/>
                 </StackPanel>
                 <Grid >
                     <StackPanel x:Name="stackSession" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Label Content="SESSION WILL EXPIRE IN: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="16" FontWeight="Bold"/>
-                        <Label x:Name="lblSessionTime" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontSize="16"/>
+                        <Label Content="SESSION WILL EXPIRE IN: " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" FontWeight="Bold"/>
+                        <Label x:Name="lblSessionTime" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3" Foreground="Red"/>
                     </StackPanel>
                     <Button x:Name="btnLacking" Content="" Padding="50 5"  FontWeight="SemiBold" Foreground="White" BorderBrush="{x:Null}" Style="{DynamicResource RoundedLackedButtonStyle}"
-                      FontSize="14" TabIndex="3" RenderTransformOrigin="1.779,0.903" Height="40" HorizontalAlignment="Right" Click="btnLacking_Click"  ToolTip="Visite Site URL"/>
+                      FontSize="14" TabIndex="3" RenderTransformOrigin="1.779,0.903" Height="40" HorizontalAlignment="Right" Click="btnLacking_Click"  ToolTip="Go to Work Order Tracking"/>
                 </Grid>
+                <Separator/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="2" >
@@ -101,9 +102,10 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="4">
-                    <Label x:Name="lblLink" Content=""  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
-                    <Button x:Name="btnLink" Background="#EEEEEE" BorderThickness="0" Click="btnLink_Click" ToolTip="Execute UR Stored Procedure">
-                        <Label x:Name="lblAdminLink" Content="admin link to unlock" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Foreground="Blue"/>
+                    <Label x:Name="lblLink" Content=""  HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="Yellow" Background="Black"/>
+                    <Separator Opacity="0" Height="20" Width="10"/>
+                    <Button x:Name="btnLink" Background="#EEEEEE" BorderThickness="0" Click="btnLink_Click" ToolTip="Unlock Record">
+                        <Label x:Name="lblAdminLink" Content="Unlock Record" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" Foreground="Blue"/>
                     </Button>
                 </StackPanel>
 
@@ -112,7 +114,7 @@
                 <Label Content="PART ID: " Grid.Column="2"  Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                 <Label x:Name="PART_ID" Content="" Grid.Column="3"  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" />
 
-                <Label x:Name="lblPartDesc" Content="" Grid.ColumnSpan="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Label x:Name="lblPartDesc" Content="" Grid.ColumnSpan="4" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Normal" Background="#FF93FF56"/>
 
                 <Label Content="STATUS: " Grid.Column="0"  Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                 <Label x:Name="STATUS" Content="" Grid.Column="1"  Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="18" />

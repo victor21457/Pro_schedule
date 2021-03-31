@@ -13,6 +13,7 @@
         WindowStartupLocation="CenterScreen"
         BorderBrush="Black"
         WindowStyle="None"
+        KeyDown="Window_KeyDown"
         >
     <Grid>
         <Grid.ColumnDefinitions>
@@ -46,8 +47,8 @@
 
             <DockPanel Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Left" Height="50" LastChildFill="False">
                 <Image x:Name="AVARTA" Height="25" Width="25" Panel.ZIndex="1" HorizontalAlignment="Left" Margin="14,0,0,10" Source="./Resource/net-on.png" Stretch="Uniform" RenderTransformOrigin="0.396,1.005" VerticalAlignment="Bottom"/>
-                <Label Content=" Sign Up" VerticalContentAlignment="Center" VerticalAlignment="Center" Foreground="White"
-                       FontWeight="SemiBold" FontSize="21" IsManipulationEnabled="True" Padding="0,5,5,5" Margin="0,0,0,0" />
+                <Label Content="Log In" VerticalContentAlignment="Center" Foreground="White"
+                       FontWeight="SemiBold" FontSize="21" IsManipulationEnabled="True" Padding="0,5,5,5" DockPanel.Dock="Left" Width="93" HorizontalAlignment="Stretch" Margin="5,0,0,0" />
             </DockPanel>
             <StackPanel Grid.ColumnSpan="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"
                         Margin="0,0,3,0">
@@ -78,10 +79,10 @@
 
             <TextBox x:Name="UserName" Grid.Column="1"  Grid.Row="1" Margin="0,15,0,15"
                      VerticalContentAlignment="Center" Style="{DynamicResource RoundedGlowingTextBoxStyle}"
-                     ToolTip="Enter UserName" TabIndex="1" FontSize="16" IsEnabled="{Binding IsAvailable}" Text="sim01"/>
-            <PasswordBox x:Name="Password" Grid.Column="1"  Grid.Row="2" Margin="0,15,0,15" 
+                     ToolTip="Enter UserName" TabIndex="1" FontSize="16" IsEnabled="{Binding IsAvailable}" Text="sim01" CharacterCasing="Upper" MaxLength="5" MaxLines="1"/>
+            <PasswordBox x:Name="Password" Grid.Column="1"  Grid.Row="2" Margin="0,15,0,15"  Password="Hello123"
                      VerticalContentAlignment="Center" Style="{DynamicResource RoundedGlowingPasswordBoxStyle}"
-                     ToolTip="At least 6 characters" TabIndex="1" FontSize="14" IsEnabled="{Binding IsAvailable}" Password="Hello123"/>
+                     ToolTip="At least 6 characters" TabIndex="1" FontSize="14" IsEnabled="{Binding IsAvailable}" />
 
             <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Vertical" >
                 <StackPanel Orientation="Horizontal" Margin="0 0 0 0" IsEnabled="{Binding IsAvailable}" RenderTransformOrigin="0.51,1.127">

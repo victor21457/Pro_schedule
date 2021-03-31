@@ -64,51 +64,53 @@ namespace Pro_schedule
                     stackSession.Visibility = Visibility.Hidden;
                 }
                    
-                GetListData();
-            }
+                GetListData("R");
+            } 
+           
         }
 
-        private void GetListData()
+        private void GetListData( string op)
         {
-            using (SqlConnection conn = new SqlConnection(_const.conStringList))
+            try
             {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("dbo.DLI_WOT_PROD_SCHEDULE_LIST", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                SqlDataReader reader = cmd.ExecuteReader();
 
-                //dt_ListView.Items.Clear();
-                lProlist = new List<ProList>();
-                while (reader.Read())
+
+                using (SqlConnection conn = new SqlConnection(_const.conStringList))
                 {
-                    //dt_ListView.Items.Add(new ProList() {
-                    //    Image = @"./Resource/arrow.png",
-                    //    WO_ID = reader["WO_ID"].ToString(),
-                    //    PART_ID = reader["PART_ID"].ToString(),
-                    //    PART_DESC = reader["PART_DESC"].ToString(),
-                    //    DUE_DATE = DateTime.Parse(reader["DUE_DATE"].ToString()).ToString("yyyy-MM-dd"),
-                    //    STATUS = reader["STATUS"].ToString(),
-                    //});
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("dbo.DLI_WOT_PROD_SCHEDULE_LIST", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SP_TYPE", op);
+                    SqlDataReader reader = cmd.ExecuteReader();
 
-                    lProlist.Add(new ProList()
+                    lProlist = new List<ProList>();
+                    while (reader.Read())
                     {
-                        Image = @"./Resource/arrow.png",
-                        WO_ID = reader["WO_ID"].ToString(),
-                        PART_ID = reader["PART_ID"].ToString(),
-                        PART_DESC = reader["PART_DESC"].ToString(),
-                        DUE_DATE = DateTime.Parse(reader["DUE_DATE"].ToString()).ToString("yyyy-MM-dd"),
-                        STATUS = reader["STATUS"].ToString(),
-                    });
+                        lProlist.Add(new ProList()
+                        {
+                            Image = @"./Resource/arrow.png",
+                            WO_ID = reader["WO_ID"].ToString(),
+                            PART_ID = reader["PART_ID"].ToString(),
+                            PART_DESC = reader["PART_DESC"].ToString(),
+                            DUE_DATE = DateTime.Parse(reader["DUE_DATE"].ToString()).ToString("yyyy-MM-dd"),
+                            STATUS = reader["STATUS"].ToString(),
+                        });
+                    }
+                    dt_ListView.ItemsSource = lProlist;
+                    lblTotal.Content = "Totals: " + lProlist.Count.ToString();
                 }
-                dt_ListView.ItemsSource = lProlist;
-                lblTotal.Content = "Totals: " + lProlist.Count.ToString();
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show(e.Message);
+                Close();
             }
         }
         
         private void AutoSendArpProc(object sender, ElapsedEventArgs e)
         {
             _const.proLevel -= 1;
-            if (_const.proLevel < 0)
+            if (_const.proLevel <= 0)
             {
                 timer.Dispose();
                 _const.logined = false;
@@ -142,6 +144,17 @@ namespace Pro_schedule
         }
         private void WinClose(object sender, RoutedEventArgs e)
         {
+            using (SqlConnection conn = new SqlConnection(_const.conStringList))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[DLI_WOT_PROD_SCHED_IUD]", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@SP_TYPE", "UA");
+                cmd.Parameters.AddWithValue("@WO_ID", "1");
+                cmd.Parameters.AddWithValue("@EMP_ID", _const.empID);
+                cmd.ExecuteNonQuery();
+            }
+
             Close();
             Environment.Exit(0);
         }
@@ -196,7 +209,36 @@ namespace Pro_schedule
         private void btnLogout(object sender, RoutedEventArgs e)
         {
             if ( timer != null ) timer.Dispose();
+
+            using (SqlConnection conn = new SqlConnection(_const.conStringList))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[DLI_WOT_PROD_SCHED_IUD]", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@SP_TYPE", "UR");
+                cmd.Parameters.AddWithValue("@WO_ID", "1");
+                cmd.Parameters.AddWithValue("@EMP_ID", _const.empID);
+                cmd.ExecuteNonQuery();
+            }
+
+                     
             ShowLoginForm();
+        }
+
+        private void optionClick(object sender, RoutedEventArgs e)
+        {
+            if  ( radioRelease.IsChecked ==  true)
+            {
+                GetListData("R");
+
+            } 
+            else if  (radioFirmed.IsChecked == true){
+                GetListData("F");
+            }
+            else if ( radioBoth.IsChecked == true)
+            {
+                GetListData("B");
+            }
         }
 
         private void txtFilter_TextChanged(object sender, TextChangedEventArgs e)

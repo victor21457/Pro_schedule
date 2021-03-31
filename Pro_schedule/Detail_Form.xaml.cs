@@ -36,8 +36,12 @@ namespace Pro_schedule
         {
             InitializeComponent();
             this._const = _const;
-            lblEmpID.Content = $"{_const.empName} ({_const.empID.ToUpper()})";
+            initData();
+        }
 
+        private void initData()
+        {
+            lblEmpID.Content = $"{_const.empName} ({_const.empID.ToUpper()})";
 
             GetDetailData();
             SetCmbDepartment();
@@ -72,7 +76,7 @@ namespace Pro_schedule
         private void AutoSendArpProc(object sender, ElapsedEventArgs e)
         {
             _const.curTime = DateTime.Now.ToString("HH:mm");
-            this.Dispatcher.Invoke(() => lblLink.Content = "RECORD LOCKED BY: " + _const.empName + " @ " + _const.curTime);
+            this.Dispatcher.Invoke(() => lblLink.Content = "RECORD LOCKED BY: " + lockedByName + " @ " + _const.curTime);
 
             if (_const.proLevel < 90)
                 this.Dispatcher.Invoke(() => lblSessionTime.Content = _const.proLevel.ToString() + " Mins");
@@ -252,20 +256,32 @@ namespace Pro_schedule
                 if (!string.IsNullOrEmpty(lockedBy) && lockedBy.ToUpper() == _const.empID.ToUpper()) Locked = true;
                 else Locked = false;
 
-                if (lockedBy.ToUpper() != _const.empID.ToUpper() || _const.proLevel < 90)
-                {
-                    btnLink.Visibility = Visibility.Hidden;
 
-                }
-                else
+                if (lockedBy.ToUpper() != _const.empID.ToUpper() && _const.proLevel >= 90)
                 {
                     btnLink.Visibility = Visibility.Visible;
 
                 }
+                else
+                {
+                    btnLink.Visibility = Visibility.Hidden;
+                }
+
+                if (lockedBy.ToUpper() != _const.empID.ToUpper())
+                {
+                    lblLink.Visibility = Visibility.Visible;
+
+                }
+                else
+                {
+                    lblLink.Visibility = Visibility.Hidden;
+                }
+
+
 
                 if (lacking != "YES")
                 {
-                    btnLacking.Content = "NO LACKING";
+                    btnLacking.Content = "NOT LACKING";
                     btnLacking.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x3C, 0xB3, 0x71));
 
                 }
@@ -285,7 +301,7 @@ namespace Pro_schedule
             depID = cmbDEPARTMENT.SelectedIndex > -1 ? department[cmbDEPARTMENT.SelectedIndex].value : null;
             roomID = cmbROOM.SelectedIndex > -1 ? room[cmbROOM.SelectedIndex].value : null;
             statusID = cmbSTATUS.SelectedIndex > -1 ? status[cmbSTATUS.SelectedIndex].value : null;
-            actionID = cmbSTATUS.SelectedIndex > -1 ? actions[cmbACTION.SelectedIndex].value : null;
+            actionID = cmbACTION.SelectedIndex > -1 ? actions[cmbACTION.SelectedIndex].value : null;
             prioID = cmbPRIORITY.SelectedIndex > -1 ? (cmbPRIORITY.SelectedIndex + 1).ToString() : null;
 
             using (SqlConnection conn = new SqlConnection(_const.conStringList))
@@ -349,7 +365,11 @@ namespace Pro_schedule
                     cmd.Parameters.AddWithValue("@EMP_ID", _const.empID);
                     cmd.ExecuteNonQuery();
                 }
+
+                timer.Dispose();
+                initData();
             }
+
 
         }
 
@@ -402,29 +422,39 @@ namespace Pro_schedule
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            using (SqlConnection conn = new SqlConnection(_const.conStringList))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[DLI_WOT_PROD_SCHED_IUD]", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@SP_TYPE", "UA");
+                cmd.Parameters.AddWithValue("@WO_ID", "1");
+                cmd.Parameters.AddWithValue("@EMP_ID", _const.empID);
+                cmd.ExecuteNonQuery();
+            }
+
             CloseWin();
         }
         private void WinClose(object sender, RoutedEventArgs e)
         {
+
+            using (SqlConnection conn = new SqlConnection(_const.conStringList))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("[dbo].[DLI_WOT_PROD_SCHED_IUD]", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@SP_TYPE", "UA");
+                cmd.Parameters.AddWithValue("@WO_ID", "1");
+                cmd.Parameters.AddWithValue("@EMP_ID", _const.empID);
+                cmd.ExecuteNonQuery();
+            }
+
             CloseWin();
         }
         private void EnableControllers()
         {
             Submit.IsEnabled = txtNote.IsEnabled = MANUAL_QTY.IsEnabled = cmbDEPARTMENT.IsEnabled = cmbROOM.IsEnabled
                 = cmbSTATUS.IsEnabled = cmbACTION.IsEnabled = cmbPRIORITY.IsEnabled = btnLacking.IsEnabled = Locked;
-            //if ( Locked == false)
-            //{
-            //    if (lacking != "YES")
-            //    {
-            //        btnLacking.Background = new SolidColorBrush(Color.FromArgb(0x88, 0x3C, 0xB3, 0x71));
-            //        btnLacking.Foreground = Brushes.Gray;
-            //    }
-            //    else
-            //    {
-            //        btnLacking.Background = new SolidColorBrush(Color.FromArgb(0x88, 0xB2, 0x22, 0x22));
-            //        btnLacking.Foreground = Brushes.Gray;
-            //    }
-            //}
         }
         private void cmbACTION_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -438,4 +468,7 @@ namespace Pro_schedule
         public string value { get; set; }
         public string text { get; set; }
     }
+
+
+
 }

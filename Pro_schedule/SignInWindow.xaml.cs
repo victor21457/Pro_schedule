@@ -42,20 +42,25 @@ namespace Pro_schedule
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if ( UserName.Text.Length==0 || Password.Password.Length == 0)
+            LoginProc();
+        }
+
+        private void LoginProc()
+        {
+            if (UserName.Text.Length == 0 || Password.Password.Length == 0)
             {
-                CustomMsgWindow message = new CustomMsgWindow("UserName and Password Was Wrong.");
+                CustomMsgWindow message = new CustomMsgWindow("Username and Password Error, Try Again."); 
                 message.ShowDialog();
                 return;
             }
-            if ( Authur())
+            if (Authur())
             {
                 _const.logined = true;
                 Close();
             }
             else
             {
-                CustomMsgWindow message = new CustomMsgWindow("UserName and Password Was Wrong.");
+                CustomMsgWindow message = new CustomMsgWindow(_const.logError);
                 message.ShowDialog();
                 return;
             }
@@ -69,7 +74,7 @@ namespace Pro_schedule
 
                 SqlCommand cmd = new SqlCommand("dbo.uspLogin", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@pEMPID", UserName.Text.ToString());
+                cmd.Parameters.AddWithValue("@pEMPID", UserName.Text.ToString().ToUpper());
                 cmd.Parameters.AddWithValue("@pPassword", Password.Password.ToString());
 
                 var pEmpname = cmd.Parameters.Add("@EMPNAME", SqlDbType.NVarChar, 60);
@@ -92,21 +97,30 @@ namespace Pro_schedule
                 string proRes = (string)pResponse.Value;
                 if (proOk > 0)
                 {
+                    _const.logError = proRes;
                     return false;
                 }
 
-                string empName = pEmpname.Value.ToString();
+                string empName = pEmpname.Value.ToString().ToUpper();
                 string proAccess = pProAccess.Value.ToString();
                 int proLevel = (int)pProLevel.Value;
                 if (proAccess != "Y") return false;
 
-                _const.empID = UserName.Text;
+                _const.empID = UserName.Text.ToUpper();
                 _const.empName = empName;
                 _const.proLevel = _const.session = proLevel;
 
 
             }
             return true;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ( e.Key == Key.Return)
+            {
+                LoginProc();
+            }
         }
     }
 }

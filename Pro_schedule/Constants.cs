@@ -12,7 +12,7 @@ namespace Pro_schedule
 
 
         //public string conStringAuth = @"Data Source=SQL.dli.local;Initial Catalog=DLI_IT;User ID=sa;Password=MZ1+4;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        //public string conStringList = @"Data Source=SQL.dli.local;Initial Catalog=DLIMARK;User ID=sa;Password=MZ1+4;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        //public string conStringList = @"Data Source=SQL.dli.local;Initial Catalog=DLI;User ID=sa;Password=MZ1+4;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public bool logined         = false;
         public string empID         = "";
